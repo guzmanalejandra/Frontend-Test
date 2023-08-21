@@ -79,11 +79,11 @@ body {
 }
 
 .hero-box {
+  height: 120px;
   position: relative;
   display: flex;
   align-items: center;
   padding: 15px;
-  height: 180px;
   border-radius: 15px;
   overflow: hidden;
   min-height: 15px;
@@ -107,15 +107,15 @@ body {
 }
 
 .hero-image {
-  width: 200px;
-  height: 100px;
+  width: 160px; /* Mantenemos un tamaño consistente */
+  height: 120px; /* Mantenemos un tamaño consistente */
+  margin-left: 20px;
   border-radius: 15px;
   object-fit: cover;
   margin-right: 0px; 
   z-index: 1;
   top: 50%;
-  transform: translateY(-2%);
-  transform: translateX(-25%);
+  transform: translateY(-2%) translateX(-25%);
 }
 
 .hero-details {
@@ -124,7 +124,6 @@ body {
   flex-direction: column;
   justify-content: center;
   z-index: 1;
-  padding-left: 5px;
 }
 
 .hero-name {
@@ -149,4 +148,37 @@ body {
   font-size: 1.4rem;
   color: #FFF;
   margin-bottom: 10px;
+}
+
+.no-heroes-found {
+  font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+  width: 100%;
+  text-align: center;
+  margin-top: 50px; 
+  margin-left: 250px;
+  font-size: 1.2rem;
+  color: #FFF;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.liked-icon-container {
+  position: absolute;
+  z-index: 10;
+  bottom: 12px;         
+  right: 87px;            
+  width: 25px;             
+  height: 25px;
+  border-radius: 50%;
+  background-color: #6553b2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);  
 }

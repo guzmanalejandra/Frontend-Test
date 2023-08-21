@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './app.css';
 import logo from './assets/logo/logo.svg';
+import bigheart from './assets/big-heart/bigheart.svg';
+import smallheart from './assets/small-heart/smallheart.svg';
 import search from './assets/search/search.svg';
 import cancel from './assets/cancel/cancel.svg';
 import ContentLoader from 'react-content-loader';
@@ -9,11 +11,17 @@ import axios from 'axios';
 function App() {
   const [loading, setLoading] = useState(true);
   const [heroes, setHeroes] = useState<any[]>([]);
+  const [likedHeroes, setLikedHeroes] = useState<any[]>([]);
+  const [showLikedOnly, setShowLikedOnly] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [noHeroesFound, setNoHeroesFound] = useState(false); 
+
   const filteredHeroes = heroes.filter(hero => 
     hero.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     hero.biography.fullName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const heroesToDisplay = showLikedOnly ? likedHeroes : filteredHeroes;
 
   useEffect(() => {
     async function fetchData() {
@@ -29,10 +37,26 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setNoHeroesFound(heroesToDisplay.length === 0); 
+  }, [heroesToDisplay]);
+
+  function toggleLike(hero: any) {
+    if (likedHeroes.includes(hero)) {
+      setLikedHeroes(prev => prev.filter(h => h !== hero));
+    } else {
+      setLikedHeroes(prev => [...prev, hero]);
+    }
+  }
+
   return (
     <div className="App">
       <div className="logo-container">
         <img src={logo} alt="Logo" className="logo" />
+      </div>
+      <div className="tabs">
+        <button onClick={() => setShowLikedOnly(false)}>All Superheroes</button>
+        <button onClick={() => setShowLikedOnly(true)}>Liked</button>
       </div>
 
       <div className="nav-items">
@@ -57,7 +81,7 @@ function App() {
               <img src={search} alt="Search Icon" className="search-icon" />
               <input 
                 type="text" 
-                placeholder="Search..." 
+                placeholder="Search" 
                 value={searchTerm} 
                 onChange={e => setSearchTerm(e.target.value)} 
                 className="search-input"
@@ -65,24 +89,32 @@ function App() {
               <img src={cancel} alt="Cancel Search" className="cancel-icon" onClick={() => setSearchTerm('')} />
             </div>
 
-            <div className="hero-row">
-              {filteredHeroes.map((hero, index) => (
-                <React.Fragment key={hero.id}>
-                  {(index % 4 === 0 && index !== 0) && <div className="clear"></div>}
-                  <div className="hero-item">
-                    <div className="hero-box">
-                      <div className="hero-background" style={{ backgroundImage: `url(${hero.images.md})` }}></div>
-                      <img src={hero.images.md} alt={hero.name} className="hero-image" />
-                      <div className="hero-details">
-                        <div className="hero-name">{hero.name}</div>
-                        <div className="hero-real-name">Real name: {hero.biography.fullName}</div>
-                        <div className="hero-score">{(hero.powerstats.intelligence / 10).toFixed(1)}/10</div>
+            {/* Conditional rendering for no heroes found */}
+            {noHeroesFound ? (
+              <div className="no-heroes-found">No heroes found</div>
+            ) : (
+              <div className="hero-row">
+                {heroesToDisplay.map((hero, index) => (
+                  <React.Fragment key={hero.id}>
+                    {(index % 4 === 0 && index !== 0) && <div className="clear"></div>}
+                    <div className="hero-item">
+                      <div className="hero-box">
+                        <div className="hero-background" style={{ backgroundImage: `url(${hero.images.md})` }}></div>
+                        <img src={hero.images.md} alt={hero.name} className="hero-image" />
+                        <div className="liked-icon-container" onClick={() => toggleLike(hero)}>
+                          <img src={smallheart} alt="Like Icon" />
+                        </div>
+                        <div className="hero-details">
+                          <div className="hero-name">{hero.name}</div>
+                          <div className="hero-real-name">Real name: {hero.biography.fullName}</div>
+                          <div className="hero-score">{(hero.powerstats.intelligence / 10).toFixed(1)}/10</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './app.css';
 import logo from './assets/logo/logo.svg';
-import bigheart from './assets/big-heart/bigheart.svg';
 import smallheart from './assets/small-heart/smallheart.svg';
 import search from './assets/search/search.svg';
 import cancel from './assets/cancel/cancel.svg';
@@ -15,6 +14,14 @@ function App() {
   const [showLikedOnly, setShowLikedOnly] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [noHeroesFound, setNoHeroesFound] = useState(false); 
+  const [searchChanged, setSearchChanged] = useState(false);
+  const [toggleAnimation, setToggleAnimation] = useState(false);
+
+  
+  
+
+
+  
 
   const filteredHeroes = heroes.filter(hero => 
     hero.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -59,10 +66,10 @@ function App() {
         <button onClick={() => setShowLikedOnly(true)}>Liked</button>
       </div>
 
-      <div className="nav-items">
+      <div className={`nav-items ${!loading ? 'fade-in' : ''}`}>
         {loading ? (
           <ContentLoader 
-            speed={2}
+            speed={5}
             width={400}
             height={160}
             viewBox="0 0 400 160"
@@ -83,7 +90,10 @@ function App() {
                 type="text" 
                 placeholder="Search" 
                 value={searchTerm} 
-                onChange={e => setSearchTerm(e.target.value)} 
+                onChange={e => {setSearchTerm(e.target.value);
+                                              setSearchChanged(true);
+                                              setToggleAnimation(prev => !prev);
+                                            }}
                 className="search-input"
               />
               <img src={cancel} alt="Cancel Search" className="cancel-icon" onClick={() => setSearchTerm('')} />
@@ -93,7 +103,7 @@ function App() {
             {noHeroesFound ? (
               <div className="no-heroes-found">No heroes found</div>
             ) : (
-              <div className="hero-row">
+              <div className={`hero-row ${searchChanged ? (toggleAnimation ? 'fade-in' : 'fade-in-b') : ''}`} onAnimationEnd={() => setSearchChanged(false)}>
                 {heroesToDisplay.map((hero, index) => (
                   <React.Fragment key={hero.id}>
                     {(index % 4 === 0 && index !== 0) && <div className="clear"></div>}

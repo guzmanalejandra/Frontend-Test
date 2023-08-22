@@ -12,6 +12,11 @@ body {
   align-items: center;
 }
 
+.hero-list-container {
+  overflow: auto;
+}
+
+
 .logo {
   position: absolute;
   top: 5%;
@@ -38,7 +43,7 @@ body {
   flex: 1;
   display: flex;
   margin-right: 125px;
-  max-width: 300px; 
+  max-width: 250px; 
   padding: 1px 1px; /* Padding alrededor del contenedor */
   background-color: rgba(255, 255, 255, 0.1); /* Fondo ligeramente opaco */
   border-radius: 30px; /* Ajusta según tus necesidades */
@@ -66,6 +71,7 @@ body {
   height: 20px; 
   margin: 0 10px; 
 }
+
 .hero-row {
   display: flex;
   flex-wrap: wrap;
@@ -79,12 +85,12 @@ body {
 }
 
 .hero-box {
-  height: 120px;
+  height: 100px;
   position: relative;
   display: flex;
   align-items: center;
   padding: 15px;
-  border-radius: 15px;
+  border-radius: 10px;
   overflow: hidden;
   min-height: 15px;
   min-width: 20px;
@@ -101,25 +107,25 @@ body {
   bottom: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(8px) brightness(0.3);
+  filter: blur(20px) brightness(0.70);
   z-index: -5;
   background-color: rgba(0, 0, 0, 0.4); 
 }
 
 .hero-image {
-  width: 160px; /* Mantenemos un tamaño consistente */
-  height: 120px; /* Mantenemos un tamaño consistente */
-  margin-left: 20px;
+  width: 100px; /* Mantenemos un tamaño consistente */
+  height: 110px; /* Mantenemos un tamaño consistente */
+  margin-left: 15px;
   border-radius: 15px;
+  margin-top: 6px;
   object-fit: cover;
   margin-right: 0px; 
   z-index: 1;
-  top: 50%;
   transform: translateY(-2%) translateX(-25%);
 }
 
 .hero-details {
-  height: 80px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -132,14 +138,19 @@ body {
   color: #FFF;
   overflow: hidden; 
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
   width: 100%;
+  display: -webkit-box;  /* #1: Añadido para el line-clamp */
+  -webkit-line-clamp: 2; /* #2: Limita a 2 líneas */
+  -webkit-box-orient: vertical;
 }
+
 
 .hero-real-name, .hero-score {
   font-size: 0.5rem;
   color: #a1a1a1;  
 }
+
 
 .hero-title {
   width: 100%;
@@ -170,15 +181,41 @@ body {
 .liked-icon-container {
   position: absolute;
   z-index: 10;
-  bottom: 12px;         
-  right: 87px;            
-  width: 25px;             
-  height: 25px;
+  bottom: 1px;         
+  right: 95px;            
+  width: 35px;             
+  height: 35px;
   border-radius: 50%;
-  background-color: #6553b2;
+  background-color: #503da7;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);  
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInB {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in forwards;
+}
+
+.fade-in-b {
+  animation: fadeInB 0.5s ease-in forwards;
 }

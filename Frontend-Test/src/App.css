@@ -298,18 +298,21 @@ body {
 }
 
 .liked-content {
+  display: flex;
+  flex-wrap: wrap;
   animation: expandContent 0.4s ease-in-out forwards;
-  padding: 10px;
+  padding: 0px;
   color: #FFF;
   border-top: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 30px 30px; /* Ajustado para mantener consistencia con liked-tab */
+  border-radius: 0px 0px 15px 15px; /* Ajustado para mantener consistencia con liked-tab */
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 101%;
+  left: 25px;
   background-color: rgba(255, 255, 255, 0.1);
-  width: 1100px; /* Ajustado para ser del mismo ancho que liked-tab */
-  max-height: 1000px;
+  width: 1070px; /* Ajustado para ser del mismo ancho que liked-tab */
+  max-height: 0px;
+  transition: max-height 0.4s ease-in-out;
   overflow-y: auto;
   z-index: 1;
 }
@@ -327,6 +330,10 @@ body {
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
+}
+
+.liked-content.expanded {
+  max-height: 1000px; /* Este valor puede ser ajustado según el espacio que necesites */
 }
 
 .liked-hero-item:hover {

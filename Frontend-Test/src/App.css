@@ -16,7 +16,6 @@ body {
   overflow: auto;
 }
 
-
 .logo {
   position: absolute;
   top: 5%;
@@ -41,25 +40,25 @@ body {
 
 .search-container {
   flex: 1;
+  margin-top: 65px;
   display: flex;
-  margin-right: 125px;
-  max-width: 250px; 
-  padding: 1px 1px; /* Padding alrededor del contenedor */
-  background-color: rgba(255, 255, 255, 0.1); /* Fondo ligeramente opaco */
-  border-radius: 30px; /* Ajusta según tus necesidades */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para dar efecto elevado */
+  margin-right: 110px;
+  max-width: 300px; 
+  padding: 1px 1px; 
+  background-color: rgba(255, 255, 255, 0.1); 
+  border-radius: 30px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease; 
-
-
 }
+
 .search-input {
-  background-color: transparent; /* Fondo ligeramente opaco */
+  background-color: transparent; 
   border: none;
-  padding: 10px 15px; /* Ajusta el padding para tener un poco más de espacio a los lados */
+  padding: 10px 15px; 
   border-radius: 50px;
   color: #bf9acf;
   flex: 1;
-  font-size: 16px; /* Ajuste de tamaño de fuente */
+  font-size: 16px;
   outline: none;
   border-radius: 25px;
 }
@@ -75,8 +74,25 @@ body {
 .hero-row {
   display: flex;
   flex-wrap: wrap;
-  width:150%;
+  width: 150%;
+  height: 350px;
+  overflow-y: auto;
+  margin-top: 10px;
   margin-left: 6%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.7) rgba(0, 0, 0, 0.1);
+}
+
+.hero-row::-webkit-scrollbar {
+  width: 10px;
+}
+
+.hero-row::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.hero-row::-webkit-scrollbar-thumb {
+  background: rgba(155, 155, 155, 0.7);
 }
 
 .hero-item {
@@ -94,7 +110,6 @@ body {
   overflow: hidden;
   min-height: 15px;
   min-width: 20px;
-  position: relative;
 }
 
 .hero-background {
@@ -113,8 +128,8 @@ body {
 }
 
 .hero-image {
-  width: 100px; /* Mantenemos un tamaño consistente */
-  height: 110px; /* Mantenemos un tamaño consistente */
+  width: 100px;
+  height: 110px;
   margin-left: 15px;
   border-radius: 15px;
   margin-top: 6px;
@@ -134,48 +149,54 @@ body {
 
 .hero-name {
   font-size: 1vw;
-  font-weight: auto;
+  font-weight: bolder;
   color: #FFF;
   overflow: hidden; 
   text-overflow: ellipsis;
   white-space: normal;
   width: 100%;
-  display: -webkit-box;  /* #1: Añadido para el line-clamp */
-  -webkit-line-clamp: 2; /* #2: Limita a 2 líneas */
+  display: -webkit-box;  
+  -webkit-line-clamp: 2; 
   -webkit-box-orient: vertical;
 }
 
-
-.hero-real-name, .hero-score {
+.hero-real-name {
   font-size: 0.5rem;
   color: #a1a1a1;  
 }
 
+.score-icon {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.hero-score {
+  display: flex;
+  align-items: center;
+  font-size: 0.5rem;
+  color: #a1a1a1;
+}
 
 .hero-title {
+  margin-top: 65px;
   width: 100%;
   font-weight: bolder;
-  margin-left: 85px;
+  margin-left: 65px;
   font-size: 1.4rem;
   color: #FFF;
   margin-bottom: 10px;
 }
 
 .no-heroes-found {
-  font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+  font-family: 'Poppins', sans-serif; 
   width: 100%;
   text-align: center;
   margin-top: 50px; 
   margin-left: 250px;
   font-size: 1.2rem;
   color: #FFF;
-}
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
 }
 
 .liked-icon-container {
@@ -212,10 +233,115 @@ body {
   }
 }
 
+@keyframes expandContent {
+    from {
+        max-height: 0;
+    }
+    to {
+        max-height: 300px;
+    }
+}
+
 .fade-in {
   animation: fadeIn 0.3s ease-in forwards;
 }
 
 .fade-in-b {
-  animation: fadeInB 0.5s ease-in forwards;
+  animation: fadeInB 0.3s ease-in forwards;
+}
+
+.hero-box:hover {
+  border: 1px solid #503da7;
+  transition: border 0.3s ease-in-out;
+}
+
+.liked-section {
+  position: relative;
+  margin-left: 60px;
+  top: 50%;
+  margin-bottom: 300px;
+  transition: margin-bottom 0.4s ease-in-out;
+}
+
+.liked-tab {
+  margin-top: 125px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1); 
+  border-radius: 30px;
+  width: 1100px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: box-shadow 0.3s ease;
+}
+
+.liked-tab img:first-child {
+    background-color: #503da7;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.liked-tab span {
+  color: #FFF;
+  flex: 1;
+}
+
+.arrow-icon {
+  transition: transform 0.3s;
+}
+
+.arrow-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.liked-content {
+  animation: expandContent 0.4s ease-in-out forwards;
+  padding: 10px;
+  color: #FFF;
+  border-top: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 30px 30px; /* Ajustado para mantener consistencia con liked-tab */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 1100px; /* Ajustado para ser del mismo ancho que liked-tab */
+  max-height: 1000px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.liked-hero-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  width: calc(25% - 20px); /* Ajustar para que 4 ítems encajen en el ancho total */
+  margin: 5px;
+  margin: 10px 0;
+  width: calc(90%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.liked-hero-item:hover {
+  transform: scale(1.05);
+}
+
+@keyframes retractContent {
+  from {
+      max-height: 300px;
+  }
+  to {
+      max-height: 0;
+  }
+}
+
+.liked-content:not(.expanded) {
+  animation: retractContent 0.4s ease-in-out forwards;
 }

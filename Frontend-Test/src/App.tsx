@@ -10,21 +10,34 @@ import mediumfilledheart from './assets/medium-filled-heart/mediumfilledheart.sv
 import ContentLoader from 'react-content-loader';
 import axios from 'axios';
 
-function HeroBox({ hero, toggleLikeFunc, isLiked }) {
+
+
+// Componente para mostrar la información de un superhéroe
+function HeroBox({ hero, toggleLikeFunc, isLiked, recentlyLikedHeroId }) {  // Agregamos recentlyLikedHeroId como prop
+    const averageScore = (
+        hero.powerstats.intelligence + 
+        hero.powerstats.strength + 
+        hero.powerstats.combat + 
+        hero.powerstats.durability
+    ) / 4 / 10;
+    
     return (
         <div className="hero-item">
             <div className="hero-box">
+                
+                {hero.id === recentlyLikedHeroId && <div className="recently-liked">Recently Liked</div>}
+
                 <div className="hero-background" style={{ backgroundImage: `url(${hero.images.md})` }}></div>
                 <img src={hero.images.md} alt={hero.name} className="hero-image" />
                 <div className="liked-icon-container" onClick={() => toggleLikeFunc(hero)}>
-                    <img src={isLiked ? mediumfilledheart : smallheart} alt="Like Icon" />
+                    <img src={isLiked ? mediumfilledheart : smallheart} alt="Like Icon" className={isLiked ? 'liked' : ''} />
                 </div>
                 <div className="hero-details">
                     <div className="hero-name">{hero.name}</div>
                     <div className="hero-real-name">Real name: {hero.biography.fullName}</div>
                     <div className="hero-score">
                         <img src={fist} alt="Fist" className="score-icon" />
-                        <strong>{(hero.powerstats.intelligence / 10).toFixed(1)}</strong>/10
+                        <strong>{averageScore.toFixed(1)}</strong>/10
                     </div>
                 </div>
             </div>
@@ -33,30 +46,36 @@ function HeroBox({ hero, toggleLikeFunc, isLiked }) {
 }
 
 function App() {
-    const [loading, setLoading] = useState(true);
-    const [heroes, setHeroes] = useState<any[]>([]);
-    const [likedHeroes, setLikedHeroes] = useState<any[]>([]);
-    const [showLikedOnly] = useState(false);
-    const [isLikedExpanded, setIsLikedExpanded] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [noHeroesFound, setNoHeroesFound] = useState(false); 
-    const [searchChanged, setSearchChanged] = useState(false);
-    const [toggleAnimation, setToggleAnimation] = useState(false);
+    // Estado de la aplicación
+    const [loading, setLoading] = useState(true); // Estado de carga de datos
+    const [heroes, setHeroes] = useState<any[]>([]); // Lista de héroes
+    const [likedHeroes, setLikedHeroes] = useState<any[]>([]); // Héroes que el usuario ha dado "me gusta"
+    const [isLikedExpanded, setIsLikedExpanded] = useState(false); // Expandir o contraer la sección de "me gusta"
+    const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
+    const [noHeroesFound, setNoHeroesFound] = useState(false);  // Indicador de no hay héroes encontrados
+    const [searchChanged, setSearchChanged] = useState(false); // Indicador de que el término de búsqueda ha cambiado
+    const [toggleAnimation, setToggleAnimation] = useState(false); // Alternar animación al cambiar la búsqueda
+    const [recentlyLikedHeroId, setRecentlyLikedHeroId] = useState<number | null>(null);
 
+
+
+    // Filtrar héroes según el término de búsqueda
     const filteredHeroes = heroes.filter(hero => 
         hero.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
         hero.biography.fullName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const heroesToDisplay = showLikedOnly ? likedHeroes : filteredHeroes;
+    const heroesToDisplay = filteredHeroes;
 
+    // Efecto para cargar los héroes al montar el componente
     useEffect(() => {
         async function fetchData() {
             try {
                 const response = await axios.get('https://akabab.github.io/superhero-api/api/all.json');
                 const savedLikedHeroes = localStorage.getItem('likedHeroes');
                 console.log('Retrieved liked heroes from localStorage:', savedLikedHeroes);
-                
+
+                 // Si hay héroes guardados en localStorage que el usuario ha dado "me gusta", se filtran
                 if (savedLikedHeroes) {
                     const parsedLikedHeroes = JSON.parse(savedLikedHeroes);
                     setLikedHeroes(parsedLikedHeroes);
@@ -73,15 +92,18 @@ function App() {
         fetchData();
     }, []);
 
+     // Efecto para verificar si no se encontraron héroes
     useEffect(() => {
         setNoHeroesFound(heroesToDisplay.length === 0); 
     }, [heroesToDisplay]);
 
+    // Efecto para guardar héroes con "me gusta" en localStorage
     useEffect(() => {
         console.log('Saving liked heroes to localStorage:', likedHeroes);
         localStorage.setItem('likedHeroes', JSON.stringify(likedHeroes));
     }, [likedHeroes]);
 
+    // Verificar si un héroe tiene "me gusta"
     function isHeroLiked(heroId: number) {
         return likedHeroes.some(h => h.id === heroId);
     }
@@ -98,6 +120,7 @@ function App() {
                 console.log('All Heroes after unliking:', updated);
                 return updated;
             });
+        // Si no tiene "me gusta", se añade
         } else {
             setLikedHeroes(prev => {
                 const updated = [...prev, hero];
@@ -109,9 +132,14 @@ function App() {
                 console.log('All Heroes after liking:', updated);
                 return updated;
             });
+            setRecentlyLikedHeroId(hero.id);
+            setTimeout(() => {
+                setRecentlyLikedHeroId(null);
+            }, 5000);
         }
     }
 
+    // Renderizado del componente principal
     return (
         <div className="App">
             <div className="logo-container">
@@ -126,7 +154,8 @@ function App() {
                 {isLikedExpanded && (
                     <div className={`liked-content ${isLikedExpanded ? 'expanded' : ''}`}>
                         {likedHeroes.map(hero => (
-                            <HeroBox key={hero.id} hero={hero} toggleLikeFunc={toggleLike} isLiked={isHeroLiked(hero.id)} />
+                            <HeroBox key={hero.id} hero={hero} toggleLikeFunc={toggleLike} isLiked={isHeroLiked(hero.id)} recentlyLikedHeroId={recentlyLikedHeroId} />
+
                         ))}
                     </div>
                 )}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './app.css'
-import './App.css'
+import './app.css'
 import logo from './assets/logo/logo.svg'
 import smallheart from './assets/small-heart/smallheart.svg'
 import search from './assets/search/search.svg'
